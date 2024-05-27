@@ -1,0 +1,18 @@
+image:
+  file: .cde.Dockerfile
+
+# tasks:
+#   - name: Versions
+#     command: |
+#       sh ./tools_platform/environment_versions.sh
+#   - name: Variables
+#     command: |
+#       sh ./tools_platform/environment_variables.sh
+      
+vscode:
+  extensions:
+    - hashicorp.terraform
+    - ms-azuretools.vscode-azureresourcegroups
+    - formulahendry.code-runner
+    - gitpod.gitpod-desktop
+    - ms-dotnettools.csdevkit
