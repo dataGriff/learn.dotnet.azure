@@ -16,3 +16,4 @@ vscode:
     - formulahendry.code-runner
     - gitpod.gitpod-desktop
     - ms-dotnettools.csdevkit
+    - patcx.vscode-nuget-gallery

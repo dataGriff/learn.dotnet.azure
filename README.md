@@ -1,3 +1,5 @@
-# learn.cosmosdb
+# learn.dotnet.azure
 
-* [Pluralsight Course](https://app.pluralsight.com/library/courses/building-event-driven-microservices-azure-cosmos-db-change-feed/exercise-files)
+My repo for learning dotnet and azure.
+
+* [Pluralsight - Building Event Driven Microservices with Cosmos DB Change Feed](./plsight_change_feed/README.md)
