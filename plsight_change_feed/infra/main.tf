@@ -45,6 +45,15 @@ resource "azurerm_cosmosdb_sql_container" "cart" {
   partition_key_path = "/cartId"
 }
 
+resource "azurerm_cosmosdb_sql_container" "cartByItem" {
+  name                = "cartByItem"
+  resource_group_name = azurerm_resource_group.change_feed.name
+  account_name        = azurerm_cosmosdb_account.change_feed.name
+  database_name       = azurerm_cosmosdb_sql_database.acme.name
+
+  partition_key_path = "/item"
+}
+
 resource "azurerm_cosmosdb_sql_container" "lease" {
   name                = "lease"
   resource_group_name = azurerm_resource_group.change_feed.name
