@@ -34,7 +34,6 @@ resource "azurerm_cosmosdb_sql_database" "acme" {
   name                = "acme-webstore"
   resource_group_name = azurerm_resource_group.change_feed.name
   account_name        = azurerm_cosmosdb_account.change_feed.name
-  throughput          = 400
 }
 
 resource "azurerm_cosmosdb_sql_container" "cart" {
