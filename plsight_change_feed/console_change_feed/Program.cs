@@ -15,7 +15,7 @@ namespace CfpLibraryHost
 
             Task.Run(async () =>
             {
-                _client = new CosmosClient("AccountEndpoint=https://lrn-changefeed-cosdb-eun-dgrf.documents.azure.com:443/;AccountKey=X6yUSLuGpgrpDkAxLK7zli8na6WCgBqDLs5NQuCrVvFtnhuWpkQSN40k4rJMrDfWD1prhwIr9vFJACDb5kD4oQ==;");
+                _client = new CosmosClient("");
 
                 var _database = _client.GetDatabase("acme-webstore");
                 var cartContainer = _database.GetContainer("cart");
