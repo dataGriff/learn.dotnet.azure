@@ -1,10 +1,6 @@
-using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 
 namespace Replicate
 {
@@ -31,7 +27,7 @@ namespace Replicate
 			ILogger logger)
 		{
 			var container = _client.GetContainer("acme-webstore", "cartByItem");
-			foreach (var document in documents)
+			foreach(Document doc in documents ?? Enumerable.Empty<Document>())
 			{
 				try
 				{
