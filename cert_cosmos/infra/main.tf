@@ -9,8 +9,8 @@ resource "azurerm_resource_group" "dp420" {
 
 resource "azurerm_cosmosdb_account" "dp420" {
   name                = "lrn-dp420-cosdb-eun-dgrf"
-  location            = azurerm_resource_group.change_feed.location
-  resource_group_name = azurerm_resource_group.change_feed.name
+  location            = azurerm_resource_group.dp420.location
+  resource_group_name = azurerm_resource_group.dp420.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
@@ -25,7 +25,7 @@ resource "azurerm_cosmosdb_account" "dp420" {
   }
 
   geo_location {
-    location          = azurerm_resource_group.change_feed.location
+    location          = azurerm_resource_group.dp420.location
     failover_priority = 0
   }
 }
