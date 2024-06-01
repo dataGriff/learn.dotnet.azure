@@ -18,6 +18,12 @@ tasks:
       curl -k https://localhost:8081/_explorer/emulator.pem > ~/emulatorcert.crt
       sudo cp ~/emulatorcert.crt /usr/local/share/ca-certificates/
       sudo update-ca-certificates
+      gp sync-done cosmoscert
+  - name: CosmosExplorer
+    command: |
+      gp sync-await cosmoscert
+      gp preview https://localhost:8081/_explorer/index.html
+  
 
 vscode:
   extensions:
