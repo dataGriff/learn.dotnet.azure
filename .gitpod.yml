@@ -1,14 +1,24 @@
 image:
   file: .cde.Dockerfile
 
-# tasks:
-#   - name: Versions
-#     command: |
-#       sh ./tools_platform/environment_versions.sh
-#   - name: Variables
-#     command: |
-#       sh ./tools_platform/environment_variables.sh
-      
+tasks:
+  - name: Cosmosdb
+    init: |
+      docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    command: |
+      docker run \
+        --publish 8081:8081 \
+        --publish 10250-10255:10250-10255 \
+        --tty \
+        mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        gp sync-done cosmosrun
+  - name: CosmosCert
+    command: |
+      gp sync-await cosmosrun \
+      curl -k https://localhost:8081/_explorer/emulator.pem > ~/emulatorcert.crt && \
+      sudo cp ~/emulatorcert.crt /usr/local/share/ca-certificates/  && \
+      sudo update-ca-certificates
+
 vscode:
   extensions:
     - hashicorp.terraform
