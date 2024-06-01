@@ -2,9 +2,8 @@
 using System.Linq;
 using Microsoft.Azure.Cosmos;
 
-string endpoint = System.Environment.GetEnvironmentVariable("COSMOS_ENDPOINT");
-string key = System.Environment.GetEnvironmentVariable("COSMOS_KEY");
-CosmosClient client = new(endpoint, key);
+string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
+CosmosClient client = new(cosmos_conn);
 
 AccountProperties account = await client.ReadAccountAsync();
 Console.WriteLine($"Account Name:\t{account.Id}");

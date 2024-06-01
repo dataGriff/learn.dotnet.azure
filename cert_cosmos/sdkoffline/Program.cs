@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Azure.Cosmos;
 
-string connectionString = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
+CosmosClient client = new(cosmos_conn);
 
-CosmosClient client = new (connectionString);
 
 Database database = await client.CreateDatabaseIfNotExistsAsync("cosmicworks");
 Console.WriteLine($"New Database:\tId: {database.Id}");
@@ -14,7 +14,7 @@ Console.WriteLine($"New Container:\tId: {container.Id}");
 
 var containerResponse = await container.ReadContainerAsync();
 ContainerProperties containerProperties = containerResponse;
-containerProperties.DefaultTimeToLive = 10; // expire in 10 seconds
+containerProperties.DefaultTimeToLive = 300; // expire in 5 minutes
 var containerResponseWithTTLEnabled = container.ReplaceContainerAsync(containerProperties);
 Console.WriteLine($"Container TTL: {containerProperties.DefaultTimeToLive}");
 Console.WriteLine($"Container Indexing Mode: {containerProperties.IndexingPolicy.IndexingMode}");
