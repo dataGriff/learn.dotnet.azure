@@ -9,6 +9,7 @@ using CloudNative.CloudEvents.SystemTextJson;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
+using Azure.Messaging.EventHubs.Producer;
 
 namespace ConsoleEventHandler
 {
@@ -16,15 +17,19 @@ namespace ConsoleEventHandler
     {
         private static CosmosClient _client { get; set; }
 
-                private static readonly CloudEventFormatter formatter = new JsonEventFormatter();
+
+        private static readonly CloudEventFormatter formatter = new JsonEventFormatter();
+
+          private static string eh_con = "";
 
         static void Main(string[] args)
         {
 
             Task.Run(async () =>
             {
-                string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
+                   string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
                 CosmosClient _client = new(cosmos_conn);
+
 
                 var _database = _client.GetDatabase("dog_adopter");
                 var rescueDogContainer = _database.GetContainer("rescue_dogs");
@@ -49,6 +54,9 @@ namespace ConsoleEventHandler
 
         private static async Task ProcessChanges(IReadOnlyCollection<dynamic> docs, CancellationToken cancellationToken)
         {
+                EventHubProducerClient _client = new EventHubProducerClient(eh_con);
+                EventDataBatch _batch = _client.CreateBatchAsync().GetAwaiter().GetResult();
+
             foreach (var doc in docs)
             {
                 Console.WriteLine("Hello");
@@ -70,7 +78,10 @@ namespace ConsoleEventHandler
 
             var bytes = formatter.EncodeStructuredModeMessage(cloudEvent, out var contentType);
             string json = Encoding.UTF8.GetString(bytes.Span);
-            var result = json;
+
+            _batch.TryAdd(new Azure.Messaging.EventHubs.EventData(Encoding.UTF8.GetBytes(json)));
+
+            _client.SendAsync(_batch).GetAwaiter().GetResult();
 
              Console.WriteLine(result);
             }

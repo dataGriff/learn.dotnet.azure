@@ -8,9 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Messaging.EventHubs" Version="5.11.3" />
     <PackageReference Include="CloudNative.CloudEvents" Version="2.7.1" />
     <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.7.1" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.40.0" />
+    <PackageReference Include="Microsoft.Azure.EventHubs" Version="4.3.2" />
   </ItemGroup>
 
 </Project>
