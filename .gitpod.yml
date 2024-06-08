@@ -33,3 +33,4 @@ vscode:
     - gitpod.gitpod-desktop
     - ms-dotnettools.csdevkit
     - patcx.vscode-nuget-gallery
+    - ms-vscode.azurecli

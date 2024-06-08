@@ -1,6 +1,13 @@
 {
   "recommendations": [
     "ms-azuretools.vscode-azurefunctions",
-    "ms-dotnettools.csharp"
+    "ms-dotnettools.csharp",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-azureresourcegroups",
+    "formulahendry.code-runner",
+    "gitpod.gitpod-desktop",
+    "ms-dotnettools.csdevkit",
+    "patcx.vscode-nuget-gallery",
+    "ms-vscode.azurecli"
   ]
 }
