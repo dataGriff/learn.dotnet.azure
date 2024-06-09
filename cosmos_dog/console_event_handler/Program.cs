@@ -10,6 +10,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using Azure.Messaging.EventHubs.Producer;
+using Azure.Messaging.EventHubs;
+using Azure.Messaging.EventHubs.Consumer;
+using Azure.Messaging.EventHubs.Processor;
+using Azure.Storage.Blobs;
 
 namespace ConsoleEventHandler
 {
@@ -20,14 +24,14 @@ namespace ConsoleEventHandler
 
         private static readonly CloudEventFormatter formatter = new JsonEventFormatter();
 
-          private static string eh_con = "";
+        private static string eh_con ="Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EMULATOR_DEV_SAS_VALUE;UseDevelopmentEmulator=true;";
 
         static void Main(string[] args)
         {
 
             Task.Run(async () =>
             {
-                   string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
+                string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
                 CosmosClient _client = new(cosmos_conn);
 
 
@@ -38,7 +42,7 @@ namespace ConsoleEventHandler
                 var RescueDogChanges = rescueDogContainer.GetChangeFeedProcessorBuilder<dynamic>("ConsoleRescueDogChanges", ProcessChanges)
                     .WithInstanceName("Reads rescue dog state changes")
                     .WithLeaseContainer(leaseContainer)
-                    //.WithStartTime(DateTime.MinValue.ToUniversalTime()) //starts from the beginning of time
+                    .WithStartTime(DateTime.MinValue.ToUniversalTime()) //starts from the beginning of time
                     .Build();
 
                 await RescueDogChanges.StartAsync();
@@ -49,13 +53,12 @@ namespace ConsoleEventHandler
             }).Wait();
         }
 
-
-
-
         private static async Task ProcessChanges(IReadOnlyCollection<dynamic> docs, CancellationToken cancellationToken)
         {
-                EventHubProducerClient _client = new EventHubProducerClient(eh_con);
-                EventDataBatch _batch = _client.CreateBatchAsync().GetAwaiter().GetResult();
+            EventHubProducerClient producerClient = new EventHubProducerClient(eh_con, "eh1");
+
+            // Create a batch of events 
+            using EventDataBatch eventBatch = await producerClient.CreateBatchAsync();
 
             foreach (var doc in docs)
             {
@@ -67,28 +70,43 @@ namespace ConsoleEventHandler
 
 
                 var cloudEvent = new CloudEvent
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Type = "dogadoption.cdc.rescuedog.v1",
-                        Source = new Uri("/dog_adopter", UriKind.Relative),
-                        Time = DateTimeOffset.UtcNow,
-                        DataContentType = "application/json",
-                        Data = rescueDog
-                    };
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Type = "dogadoption.cdc.rescuedog.v1",
+                    Source = new Uri("/dog_adopter", UriKind.Relative),
+                    Time = DateTimeOffset.UtcNow,
+                    DataContentType = "application/json",
+                    Data = rescueDog
+                };
 
-            var bytes = formatter.EncodeStructuredModeMessage(cloudEvent, out var contentType);
-            string json = Encoding.UTF8.GetString(bytes.Span);
+                var bytes = formatter.EncodeStructuredModeMessage(cloudEvent, out var contentType);
+                string json = Encoding.UTF8.GetString(bytes.Span);
 
-            _batch.TryAdd(new Azure.Messaging.EventHubs.EventData(Encoding.UTF8.GetBytes(json)));
+                // if (!eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(json))))
+                // {
+                //     // if it is too large for the batch
+                //     throw new Exception($"Dog {doc.id} is too large for the batch and cannot be sent.");
+                // }
 
-            _client.SendAsync(_batch).GetAwaiter().GetResult();
+                // try
+                // {
+                //     // Use the producer client to send the batch of events to the event hub
+                //     await producerClient.SendAsync(eventBatch);
 
-             Console.WriteLine(result);
+                // }
+                // finally
+                // {
+                //     await producerClient.DisposeAsync();
+                // }
+
+                Console.WriteLine(json);
+
+
             }
         }
     }
 
-     public class RescueDog
+    public class RescueDog
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
