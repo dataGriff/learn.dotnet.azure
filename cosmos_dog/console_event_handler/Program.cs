@@ -24,7 +24,7 @@ namespace ConsoleEventHandler
 
         private static readonly CloudEventFormatter formatter = new JsonEventFormatter();
 
-        private static string eh_con ="Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EMULATOR_DEV_SAS_VALUE;UseDevelopmentEmulator=true;";
+        private static string eh_con = "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EMULATOR_DEV_SAS_VALUE;UseDevelopmentEmulator=true;";
 
         static void Main(string[] args)
         {
@@ -55,10 +55,28 @@ namespace ConsoleEventHandler
 
         private static async Task ProcessChanges(IReadOnlyCollection<dynamic> docs, CancellationToken cancellationToken)
         {
-            EventHubProducerClient producerClient = new EventHubProducerClient(eh_con, "eh1");
 
             // Create a batch of events 
-            using EventDataBatch eventBatch = await producerClient.CreateBatchAsync();
+            try
+            {
+                 EventHubProducerClient producerClient = new EventHubProducerClient(eh_con, "dogrescue.cdc.rescuedog.v1");
+
+                using EventDataBatch eventBatch = await producerClient.CreateBatchAsync();
+
+                // Add events to the batch and send it
+            }
+            catch (TaskCanceledException ex)
+            {
+                Console.WriteLine("Operation timed out: " + ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine("Authentication error: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An unexpected error occurred: " + ex.Message);
+            }
 
             foreach (var doc in docs)
             {
