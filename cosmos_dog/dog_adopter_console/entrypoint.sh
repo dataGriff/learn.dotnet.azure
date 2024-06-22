@@ -21,4 +21,4 @@ update-ca-certificates
 
 # Run the tests
 echo "Running Basic CosmosDB Tests using .NET SDK.."
-dotnet ./app/dog_adopter.dll
+dotnet dog_adopter.dll

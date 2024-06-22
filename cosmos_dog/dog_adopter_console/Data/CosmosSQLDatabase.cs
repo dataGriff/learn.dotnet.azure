@@ -11,12 +11,33 @@ namespace dog_adopter.Data
         private Database _database;
         private Container _container;
 
+        string cosmos_conn = Environment.GetEnvironmentVariable("COSMOS_CONN");
+
         public CosmosSQLDatabase()
         {
-            string cosmos_conn = Environment.GetEnvironmentVariable("COSMOS_CONN");
+
 
             // Initialize CosmosClient
-            _cosmosClient = new CosmosClient(cosmos_conn);
+            _cosmosClient =  new CosmosClient(cosmos_conn, new CosmosClientOptions
+            {
+                SerializerOptions = new CosmosSerializationOptions
+                {
+                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                },
+                HttpClientFactory = () =>
+                {
+                    /*                               *** WARNING ***
+                        * This code is for demo purposes only. In production, you should use the default behavior,
+                        * which relies on the operating system's certificate store to validate the certificates.
+                    */
+                    HttpMessageHandler httpMessageHandler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+                    return new HttpClient(httpMessageHandler);
+                },
+                ConnectionMode = ConnectionMode.Direct
+               });
 
         }
 

@@ -23,18 +23,16 @@ RUN dotnet publish "dog_adopter.csproj" -c $configuration -o /app/publish /p:Use
 FROM base AS final
 WORKDIR /app
 
+COPY --from=publish /app/publish .
+# USER app
+# ENTRYPOINT ["dotnet", "dog_adopter.dll"]
+
 # Install curl
 USER root
 RUN apt-get update && apt-get install -y curl
 
-COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "dog_adopter.dll"]
-
-# WORKDIR /dog_adopter_console
 COPY ["entrypoint.sh", "entrypoint.sh"]
 
-# convert line endings to unix
-# RUN dos2unix ./entrypoint.sh 
 
-USER app
+USER root
 ENTRYPOINT ["./entrypoint.sh", "azurecosmosemulator", "8081"]
