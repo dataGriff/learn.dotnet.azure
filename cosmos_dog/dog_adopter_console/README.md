@@ -10,11 +10,13 @@ dotnet add package Newtonsoft.Json
 ```
 
 ```bash
+cd cosmos_dog/dog_adopter_console
 chmod +x entrypoint.sh
 docker compose build
 docker compose up
 ```
 
+useful for seeing files in a docker image
 ```bash
 docker export dog_adopter_console | tar t > dog_adopter_console.txt
 ```

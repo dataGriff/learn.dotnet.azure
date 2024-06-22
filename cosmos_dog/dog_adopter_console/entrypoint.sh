@@ -20,5 +20,5 @@ cp emulatorcert.crt /usr/local/share/ca-certificates/
 update-ca-certificates
 
 # Run the tests
-echo "Running Basic CosmosDB Tests using .NET SDK.."
+echo "Running Dog Adopter console app using .NET SDK.."
 dotnet dog_adopter.dll
