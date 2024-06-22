@@ -10,6 +10,7 @@ tasks:
         --publish 8081:8081 \
         --publish 10250-10255:10250-10255 \
         --tty \
+        --name azure-cosmos-emulator-latest \
         mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
         gp sync-done cosmosrun
   - name: CosmosCert
