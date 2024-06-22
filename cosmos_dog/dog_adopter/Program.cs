@@ -3,37 +3,42 @@ using Microsoft.Azure.Cosmos;
 using dog_adopter.Models;
 using System.Threading;
 
-string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
-CosmosClient client = new(cosmos_conn, new CosmosClientOptions()
-{
-    SerializerOptions = new CosmosSerializationOptions()
-    {
-        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
-    }
-});
+RescueDog rescueDog = new RescueDog("Phil", Breed.Beagle, Status.Available);
 
-Database database = await client.CreateDatabaseIfNotExistsAsync("dog_adopter");
+Console.WriteLine($"Created rescue dog: {rescueDog.Name} ({rescueDog.Breed})");
+Console.WriteLine($"The rescue dog has an id of {rescueDog.Id} and was created on {rescueDog.Timestamp}");
 
-Container container = await database.CreateContainerIfNotExistsAsync("rescue_dogs", "/breed");
+// string cosmos_conn = System.Environment.GetEnvironmentVariable("COSMOS_CONN");
+// CosmosClient client = new(cosmos_conn, new CosmosClientOptions()
+// {
+//     SerializerOptions = new CosmosSerializationOptions()
+//     {
+//         PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
+//     }
+// });
 
-await database.CreateContainerIfNotExistsAsync("lease", "/id");
+// Database database = await client.CreateDatabaseIfNotExistsAsync("dog_adopter");
 
-RescueDog rescue_dog1 = new()
-{
-    Id = Guid.NewGuid(),
-    Name = "Phil",
-    Breed = "GoldenRetriever",
-    Status = "Available",
-    Timestamp = DateTime.UtcNow
-};
+// Container container = await database.CreateContainerIfNotExistsAsync("rescue_dogs", "/breed");
 
-RescueDog rescue_dog_created = await container.CreateItemAsync<RescueDog>(rescue_dog1);
-Console.WriteLine($"Created rescue dog: {rescue_dog_created.Name} ({rescue_dog_created.Breed})");
+// await database.CreateContainerIfNotExistsAsync("lease", "/id");
 
-rescue_dog1.Status = "Adopted";
+// RescueDog rescue_dog1 = new()
+// {
+//     Id = Guid.NewGuid(),
+//     Name = "Phil",
+//     Breed = "GoldenRetriever",
+//     Status = "Available",
+//     Timestamp = DateTime.UtcNow
+// };
 
-Console.ReadKey(true);
+// RescueDog rescue_dog_created = await container.CreateItemAsync<RescueDog>(rescue_dog1);
+// Console.WriteLine($"Created rescue dog: {rescue_dog_created.Name} ({rescue_dog_created.Breed})");
 
-RescueDog rescue_dog_updated = await container.UpsertItemAsync<RescueDog>(rescue_dog1);
-Console.WriteLine($"Updated rescue dog: {rescue_dog_created.Name} ({rescue_dog_created.Status})");
+// rescue_dog1.Status = "Adopted";
+
+// Console.ReadKey(true);
+
+// RescueDog rescue_dog_updated = await container.UpsertItemAsync<RescueDog>(rescue_dog1);
+// Console.WriteLine($"Updated rescue dog: {rescue_dog_created.Name} ({rescue_dog_created.Status})");
 
