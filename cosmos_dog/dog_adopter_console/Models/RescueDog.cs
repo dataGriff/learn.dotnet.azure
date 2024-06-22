@@ -1,5 +1,7 @@
 using System;
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace dog_adopter.Models
 {
@@ -14,26 +16,24 @@ namespace dog_adopter.Models
             Timestamp = DateTime.UtcNow;
         }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public Guid Id { get; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        [JsonPropertyName("breed")]
+        [JsonProperty("breed")]
         public Breed Breed { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        [JsonPropertyName("status")]
+        [JsonProperty("status")]
         public Status Status { get; set; }
 
-        [JsonPropertyName("timestamp")]
+        [JsonProperty("timestamp")]
         public DateTime Timestamp { get; }
     }
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
+ [JsonConverter(typeof(StringEnumConverter))]
 public enum Breed
 {
     Beagle,
@@ -51,7 +51,7 @@ public enum Breed
     YorkshireTerrier
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
+[JsonConverter(typeof(StringEnumConverter))]
 public enum Status
 {
     Adopted,
