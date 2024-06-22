@@ -50,9 +50,6 @@ class Program
         }
 
         timer.Stop();
-
-        Console.WriteLine("Press any key to exit.");
-        Console.ReadKey();
     }
 
     public static RescueDog GetRandomRescueDog()

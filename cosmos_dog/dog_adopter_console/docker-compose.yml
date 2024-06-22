@@ -27,10 +27,13 @@ services:
     - '10255:10255'
     - '10256:10256'
     - '10350:10350'
+    expose:
+    - "8081"
     environment:
       - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=11
       - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false
       - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=172.16.238.246
+      # - AZURE_COSMOS_EMULATOR_ALLOW_NETWORK_ACCESS=true
     networks:
       default:
         ipv4_address: 172.16.238.246
