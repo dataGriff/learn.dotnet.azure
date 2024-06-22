@@ -7,20 +7,20 @@ namespace dog_adopter.Models
 {
     public class RescueDog
     {
-        public RescueDog(string name, Breed breed, Status status)
+        public RescueDog(string name, Breed breed, Status status, Guid id, DateTime timestamp)
         {
             Name = name;
             Breed = breed;
             Status = status;
-            Id = Guid.NewGuid();
-            Timestamp = DateTime.UtcNow;
+            Id = id;
+            Timestamp = timestamp;
         }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("id")]
-        public Guid Id { get; }
+        public Guid Id { get; set;}
 
         [JsonProperty("breed")]
         public Breed Breed { get; set; }
@@ -29,7 +29,7 @@ namespace dog_adopter.Models
         public Status Status { get; set; }
 
         [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; }
+        public DateTime Timestamp { get; set;}
     }
 }
 

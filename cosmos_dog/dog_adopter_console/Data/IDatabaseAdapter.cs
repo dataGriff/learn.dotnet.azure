@@ -10,5 +10,9 @@ namespace dog_adopter.Data
 
         Task<bool> UpdateRescueDog(RescueDog rescueDog);
 
+        Task<List<RescueDog>> GetRescueDogs();
+
+        Task<RescueDog> GetRescueDog(Breed breed, Guid id);
+
     }
 }
