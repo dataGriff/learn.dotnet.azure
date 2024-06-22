@@ -12,13 +12,13 @@ class Program
 
         var cosmosSQLDatabase = new CosmosSQLDatabase();
         await cosmosSQLDatabase.InitializeAsync();
-        int duration = 60;
+        int runDuration = 60;
         int waitBetweenUpdate = 2000;
-        Console.WriteLine($"Program will run for {duration} seconds and waits between update will be {2000} milliseconds.");
+        Console.WriteLine($"Program will run for {runDuration} seconds and waits between update will be {2000} milliseconds.");
 
         Stopwatch timer = new Stopwatch();
         timer.Start();
-        while (timer.Elapsed.TotalSeconds < 300)
+        while (timer.Elapsed.TotalSeconds < runDuration)
         {
 
             RescueDog rescueDog = GetRandomRescueDog();
@@ -39,14 +39,17 @@ class Program
 
             Console.WriteLine($"Updated rescue dog: {updatedRescueDog.Name} ({updatedRescueDog.Breed}) has a status of {updatedRescueDog.Status}");
             Console.WriteLine($"The rescue dog has an id of {updatedRescueDog.Id} and was updated on {updatedRescueDog.Timestamp}");
+
+            TimeSpan ts = timer.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         timer.Stop();
-
-        // if (success)
-        //     return Ok();
-        // else
-        //     return StatusCode(StatusCodes.Status500InternalServerError);
 
         Console.WriteLine("Press any key to exit.");
         Console.ReadKey();
