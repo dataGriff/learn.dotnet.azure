@@ -8,5 +8,7 @@ dotnet add package Newtonsoft.Json
 ```
 
 ```bash
-docker run -d  -e COSMOS_CONN=$COSMOS_CONN --name dog_adopter_console dog_adopter_console:latest 
+chmod +x entrypoint.sh
+docker compose build
+docker compose up
 ```
