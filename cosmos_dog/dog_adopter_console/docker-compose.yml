@@ -45,10 +45,13 @@ services:
     build:
       context: .
       dockerfile: .Dockerfile
+      args:
+      - environment=Development
     depends_on:
       - cosmosdb
     environment:
-      - COSMOS_CONN=AccountEndpoint=https://azurecosmosemulator:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
+      - COSMOS_CONN=AccountEndpoint=https://azurecosmosemulator:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==; # IgnoreEndpointCertificate=true; 'doesn't seem to have an effect
+     # - ASPNETCORE_ENVIRONMENT=Development
     # env_file:
     #   - .env
     networks:

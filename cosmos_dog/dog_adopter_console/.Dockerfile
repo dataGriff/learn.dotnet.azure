@@ -27,12 +27,17 @@ COPY --from=publish /app/publish .
 # USER app
 # ENTRYPOINT ["dotnet", "dog_adopter.dll"]
 
+ARG environment=Production
+ENV ASPNETCORE_ENVIRONMENT=$environment
+
 # Install curl
 USER root
-RUN apt-get update && apt-get install -y curl
+RUN if [ "$ASPNETCORE_ENVIRONMENT" = "Development" ]; then \
+    apt-get update && apt-get install -y curl; \
+    fi
 
 COPY ["entrypoint.sh", "entrypoint.sh"]
 
 
 USER root
-ENTRYPOINT ["./entrypoint.sh", "azurecosmosemulator", "8081"]
+ENTRYPOINT ["./entrypoint.sh" ]

@@ -13,6 +13,8 @@ namespace dog_adopter.Data
 
         string cosmos_conn = Environment.GetEnvironmentVariable("COSMOS_CONN");
 
+        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
         public CosmosSQLDatabase()
         {
 
@@ -26,9 +28,12 @@ namespace dog_adopter.Data
                 },
                 HttpClientFactory = () =>
                 {
+                    if(environment != "Development")
+                    {
+                        return new HttpClient(new HttpClientHandler());
+                    }
                     /*                               *** WARNING ***
-                        * This code is for demo purposes only. In production, you should use the default behavior,
-                        * which relies on the operating system's certificate store to validate the certificates.
+                        This code is for development purposes only. It should not be used in production.
                     */
                     HttpMessageHandler httpMessageHandler = new HttpClientHandler
                     {
