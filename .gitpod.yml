@@ -1,26 +1,27 @@
 image:
   file: .cde.Dockerfile
 
-tasks:
-  - name: Cosmosdb
-    init: |
-      docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
-    command: |
-      docker run \
-        --publish 8081:8081 \
-        --publish 10250-10255:10250-10255 \
-        --tty \
-        --name azure-cosmos-emulator-latest \
-        mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
-        gp sync-done cosmosrun
-  - name: CosmosCert
-    command: |
-      sh ./scripts/cosmos_emulator_check.sh
-      gp sync-done cosmoscert
-  - name: CosmosExplorer
-    command: |
-      gp sync-await cosmoscert
-      gp preview https://localhost:8081/_explorer/index.html
+# might bring this back, unsure if want to keep local to each project so can use docker compose
+# tasks:
+#   - name: Cosmosdb
+#     init: |
+#       docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+#     command: |
+#       docker run \
+#         --publish 8081:8081 \
+#         --publish 10250-10255:10250-10255 \
+#         --tty \
+#         --name azure-cosmos-emulator-latest \
+#         mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+#         gp sync-done cosmosrun
+#   - name: CosmosCert
+#     command: |
+#       sh ./scripts/cosmos_emulator_check.sh
+#       gp sync-done cosmoscert
+#   - name: CosmosExplorer
+#     command: |
+#       gp sync-await cosmoscert
+#       gp preview https://localhost:8081/_explorer/index.html
   
 vscode:
   extensions:
