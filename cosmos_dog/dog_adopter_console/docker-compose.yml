@@ -31,12 +31,15 @@ services:
     - "8081"
     environment:
       - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=11
-      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
       - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=172.16.238.246
       # - AZURE_COSMOS_EMULATOR_ALLOW_NETWORK_ACCESS=true
+    volumes:
+      - cosmosdb-dog_adopter_console-data:/var/lib/cosmosdb
     networks:
       default:
         ipv4_address: 172.16.238.246
+
   app:
     container_name: dog_adopter_console
     build:
@@ -51,3 +54,6 @@ services:
     networks:
       default:
         ipv4_address: 172.16.238.242
+
+volumes:
+  cosmosdb-dog_adopter_console-data:
