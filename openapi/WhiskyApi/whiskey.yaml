@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: Whisky API
+  description: API for managing whiskies
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /whiskies:
+    get:
+      summary: Get a list of all whiskies
+      tags:
+        - Whiskies
+      responses:
+        '200':
+          description: A list of whiskies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Whisky'
+    post:
+      summary: Create a new whisky
+      tags:
+        - Whiskies
+      requestBody:
+        description: The whisky to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Whisky'
+      responses:
+        '201':
+          description: Whisky created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Whisky'
+  /whiskies/{whiskyId}:
+    get:
+      summary: Get a single whisky by ID
+      tags:
+        - Whiskies
+      parameters:
+        - name: whiskyId
+          in: path
+          required: true
+          description: ID of the whisky to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single whisky
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Whisky'
+        '404':
+          description: Whisky not found
+    put:
+      summary: Update a whisky by ID
+      tags:
+        - Whiskies
+      parameters:
+        - name: whiskyId
+          in: path
+          required: true
+          description: ID of the whisky to update
+          schema:
+            type: string
+      requestBody:
+        description: The updated whisky
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Whisky'
+      responses:
+        '200':
+          description: Whisky updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Whisky'
+        '404':
+          description: Whisky not found
+    delete:
+      summary: Delete a whisky by ID
+      tags:
+        - Whiskies
+      parameters:
+        - name: whiskyId
+          in: path
+          required: true
+          description: ID of the whisky to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Whisky deleted
+        '404':
+          description: Whisky not found
+components:
+  schemas:
+    Whisky:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the whisky
+        name:
+          type: string
+          description: The name of the whisky
+        age:
+          type: integer
+          description: The age of the whisky
+        type:
+          type: string
+          description: The type of the whisky (e.g., Single Malt, Blended, etc.)
+        distillery:
+          type: string
+          description: The distillery where the whisky was produced
+        region:
+          type: string
+          description: The region where the whisky was produced
+      required:
+        - id
+        - name
+        - type
+        - distillery
